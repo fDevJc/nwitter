@@ -1,4 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const Home = () => <span>home</span>;
+const Home = () => {
+  const [nweet, setNweet] = useState('');
+  const onSubmit = (event) => {
+    event.preventDefault();
+  };
+  const onChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setNweet(value);
+  };
+  return (
+    <div>
+      <form onSubmit={onSubmit}>
+        <input
+          type="text"
+          placeholder="waht's on your mind?"
+          maxLength={120}
+          value={nweet}
+          onChange={onChange}
+        ></input>
+        <input type="submit" value="Nweet"></input>
+      </form>
+    </div>
+  );
+};
 export default Home;
