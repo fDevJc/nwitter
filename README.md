@@ -9,3 +9,9 @@
 https://firebase.google.com/
 
 > npm i --save firebase
+
+# use module
+
+식별자를 랜덤으로 생성
+
+> npm i uuid
