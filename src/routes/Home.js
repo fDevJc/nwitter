@@ -1,9 +1,10 @@
 import { dbService } from 'fBase';
 import React, { useEffect, useState } from 'react';
 
-const Home = () => {
+const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState('');
   const [nweets, setNweets] = useState([]);
+  /*
   const getNweets = async () => {
     const dbNweets = await dbService.collection('nweets').get();
     dbNweets.forEach((document) => {
@@ -14,14 +15,23 @@ const Home = () => {
       setNweets((prev) => [nweetObject, ...prev]);
     });
   };
+  */
+
   useEffect(() => {
-    getNweets();
+    dbService.collection('nweets').onSnapshot((snapshot) => {
+      const nweetArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setNweets(nweetArray);
+    });
   }, []);
   const onSubmit = async (event) => {
     event.preventDefault();
     await dbService.collection('nweets').add({
       text: nweet,
       createdAt: Date.now(),
+      creatorId: userObj.uid,
     });
     setNweet('');
   };
@@ -31,7 +41,7 @@ const Home = () => {
     } = event;
     setNweet(value);
   };
-  console.log(nweets);
+
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -42,15 +52,14 @@ const Home = () => {
           value={nweet}
           onChange={onChange}
         ></input>
-        <input type="submit" value="Nweet"></input>1
+        <input type="submit" value="Nweet"></input>
       </form>
       <div>
         {nweets.map((nweet) => (
           <div key={nweet.id}>
-            <h4>{nweet.nweet}</h4>
+            <h4>{nweet.text}</h4>
           </div>
         ))}
-        ;
       </div>
     </div>
   );
