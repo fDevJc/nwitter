@@ -7,7 +7,7 @@ const Profile = ({ userObj, refreshUser }) => {
   const history = useHistory();
   const onLogOutClick = () => {
     authService.signOut();
-    history.push('/ ');
+    history.push('/');
   };
   const getMyNweets = async () => {
     const nweets = await dbService
